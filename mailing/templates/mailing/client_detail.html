@@ -1,0 +1,42 @@
+{% extends 'mailing/base.html' %}
+{% load my_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="row text-center">
+        <div class="col-10">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ object }} </h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text"> Имя: {{ object.first_name }}</p>
+                    <p class="card-text"> Фамилия: {{ object.last_name }}</p>
+                    {% if object.patronymic %}
+                    <p class="card-text"> Отчество: {{ object.patronymic }}</p>
+                    {% endif %}
+                    <p class="card-text"> Электронная почта: {{ object.email }}</p>
+                    <p class="card-text">Дата добавления: {{ object.created_at }}</p>
+                    <p class="card-text"> Статус: {{ object.is_active }}</p>
+                    <p class="card-text">Комментарий: {{ object.comment }}</p>
+                    <div class="btn-group">
+                        <a href="{% url 'mailing:client_update' object.pk %}"
+                           class="btn btn-sm btn-outline-secondary">Изменить</a>
+                        <a href="{% url 'mailing:client_delete' object.pk %}"
+                           class="btn btn-sm btn-outline-danger">Удалить</a>
+                        <a class="btn btn-primary" href="{% url 'mailing:client_list' %}" role="button">Назад</a>
+                    </div>
+                    {% if object.is_active %}
+                    <a href="{% url 'mailing:toggle_activity' object.pk %}"
+                       class="btn btn-warning">Деактивировать</a>
+                    {% else %}
+                    <a href="{% url 'mailing:toggle_activity' object.pk %}"
+                       class="btn btn-success">Активировать</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
