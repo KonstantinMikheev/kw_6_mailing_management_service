@@ -3,13 +3,14 @@
 
 {% block content %}
 <div class="col-12 mb-5">
-    <a class="btn btn-outline-primary" href="{% url 'mailing:create' %}">Добавить клиента</a>
+    <a class="btn btn-outline-primary" href="{% url 'mailing:client_create' %}">Добавить клиента</a>
 </div>
 <div class="card-body">
     <table class="table table-stripped">
         <tr>
             <th>Имя</th>
             <th>Фамилия</th>
+            <th>Отчество</th>
             <th>Email</th>
             <th>Состояние</th>
             <th>Информация о клиенте</th>
@@ -18,6 +19,9 @@
         <tr>
             <td>{{ object.first_name }}</td>
             <td>{{ object.second_name }}</td>
+            {% if object.patronymic %}
+            <td>{{ object.patronymic }}</td>
+            {% endif %}
             <td>{{ object.email }}</td>
             <td>{{ object.is_active }}</td>
             <td><a href="{% url 'mailing:client_detail' object.pk %}">Подробнее</a></td>

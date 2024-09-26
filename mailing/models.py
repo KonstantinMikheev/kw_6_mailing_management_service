@@ -43,6 +43,7 @@ class EmailSetting(models.Model):
     stop_at = models.DateTimeField(verbose_name='Дата окончания отправки')
     status = models.CharField(max_length=50, choices=STATUS_MAILING, verbose_name='Статус рассылки', default='create')
     client = models.ManyToManyField(Client, verbose_name='Клиент')
+    is_active = models.BooleanField(default=True, verbose_name='Активная')
 
     def __str__(self):
         return f'{self.subject} time: {self.start_from} - {self.stop_at}, periodicity: {self.periodicity}, status: {self.status}'

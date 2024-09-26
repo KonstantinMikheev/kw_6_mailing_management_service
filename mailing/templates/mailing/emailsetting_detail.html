@@ -1,10 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'mailing/base.html' %}
+{% load my_tags %}
+{% block content %}
 
-</body>
-</html>
+
+<div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col">
+            <div class="card shadow-sm">
+                <img src="{{ client.image | media_filter }}">
+                <div class="card-body">
+                    <p class="card-text">Тема рассылки: {{ object.subject }}</p>
+                    <p class="card-text">Текст рассылки: {{ object.body }}</p>
+                    <p class="card-text">Начало рассылки: {{ object.start_from }}</p>
+                    <p class="card-text">Окончание рассылки: {{ object.stop_at }}</p>
+                    <p class="card-text">Периодичность: {{ object.periodicity }}</p>
+                    <p class="card-text">Статус: {{ object.status }}</p>
+                    <p class="card-text">Получатели рассылки: </p>
+                    {% for client in emailsetting.client.all %}
+                    <p class="card-text">{{ client }}</p>
+                    {% endfor %}
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <a class="btn btn-primary" href="{% url 'mailing:emailsetting_list' %}"
+                               role="button">Вернуться</a>
+                            {% if perms.mailings.deactivate_mailing or user == object.owner or user.is_superuser %}
+                            <a class="btn btn-success" href="{% url 'mailings:emailsetting_update' object.pk %}"
+                               role="button">Изменить</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

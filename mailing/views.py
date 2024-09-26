@@ -6,14 +6,23 @@ from mailing.forms import ClientForm, EmailSettingForm
 from mailing.models import Client, EmailSetting, MailingLog
 
 
-class StartPageView(TemplateView):
-    template_name = 'mailing/start_page.html'
+class IndexView(TemplateView):
+    template_name = 'mailing/index.html'
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['title'] = 'Главная'
+        context_data['count_mailing'] = EmailSetting.objects.all().count()
+        active_mailings_count = EmailSetting.objects.filter(is_active=True).count()
+        context_data['active_mailings_count'] = active_mailings_count
+        unique_clients_count = Client.objects.filter(is_active=True).distinct().count()
+        context_data['unique_clients_count'] = unique_clients_count
+        return context_data
 
 
 class ClientCreateView(CreateView):
     model = Client
     form_class = ClientForm
-    success_url = reverse_lazy('mailing:client_list')
 
     def get_success_url(self):
         return reverse_lazy('mailing:client_detail', args=[self.kwargs.get('pk')])
@@ -22,7 +31,6 @@ class ClientCreateView(CreateView):
 class ClientUpdateView(UpdateView):
     model = Client
     form_class = ClientForm
-    success_url = reverse_lazy('mailing:client_list')
 
     def get_success_url(self):
         return reverse_lazy('mailing:client_detail', args=[self.kwargs.get('pk')])
@@ -62,20 +70,20 @@ class EmailSettingCreateView(CreateView):
 class EmailSettingUpdateView(UpdateView):
     model = EmailSetting
     form_class = EmailSettingForm
-    success_url = reverse_lazy('mailings:mailingsettings_list')
+    success_url = reverse_lazy('mailing:emailsetting_list')
 
-    def get_form_class(self):
-        user = self.request.user
-        if user == self.object.owner:
-            return MailingSettingsForm
-        if user.has_perm('mailings.view_all_mailings') and user.has_perm('mailings.deactivate_mailing'):
-            return ModeratorMailingSettingsForm
-        raise PermissionDenied
+    # def get_form_class(self):
+    #     user = self.request.user
+    #     if user == self.object.owner:
+    #         return EmailSettingForm
+    #     if user.has_perm('mailing.view_all_mailings') and user.has_perm('mailings.deactivate_mailing'):
+    #         return ModeratorEmailSettingForm
+    #     raise PermissionDenied
 
 
 class EmailSettingDeleteView(DeleteView):
     model = EmailSetting
-    success_url = reverse_lazy('mailings:mailingsettings_list')
+    success_url = reverse_lazy('mailing:emailsetting_list')
 
 
 class MailingLogView(ListView):

@@ -16,14 +16,20 @@ class StyleFormMixin:
 
 
 class ClientForm(StyleFormMixin, forms.ModelForm):
-    model = Client
-    fields = '__all__'
+    class Meta:
 
-class EmailSettingForm(StyleFormMixin, forms.Form):
-    model = EmailSetting
-    fields = '__all__'
+        model = Client
+        fields = '__all__'
+
+class EmailSettingForm(StyleFormMixin, forms.ModelForm):
+    class Meta:
+
+        model = EmailSetting
+        fields = '__all__'
 
 class MailingLogForm(StyleFormMixin, forms.ModelForm):
-    model = MailingLog
-    fields = '__all__'
+    class Meta:
+
+        model = MailingLog
+        fields = '__all__'
 

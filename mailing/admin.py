@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from mailing.models import Client, Message
+from mailing.models import Client, EmailSetting, MailingLog
 
 
 @admin.register(Client)
@@ -12,10 +12,14 @@ class ClientAdmin(admin.ModelAdmin):
     ordering = ('-created_at',)
 
 
-@admin.register(Message)
-class MessageAdmin(admin.ModelAdmin):
+@admin.register(EmailSetting)
+class EmailSettingAdmin(admin.ModelAdmin):
     list_display = ('subject', 'body',)
-    list_filter = ('subject',)
     search_fields = ('subject', 'body',)
-    date_hierarchy = 'created_at'
-    ordering = ('-created_at',)
+
+
+@admin.register(MailingLog)
+class MailingLogAdmin(admin.ModelAdmin):
+    list_display = ('time', 'status', 'server_response', 'client', 'mailing',)
+    list_filter = ('time', 'status', 'client', 'mailing')
+    search_fields = ('time', 'status', 'server_response', 'client__email', 'mailing__subject')
