@@ -19,20 +19,18 @@
                     <p class="card-text">Дата добавления: {{ object.created_at }}</p>
                     <p class="card-text"> Статус: {{ object.is_active }}</p>
                     <p class="card-text">Комментарий: {{ object.comment }}</p>
+                    <p class="card-text">Владелец: {{ object.owner }}</p>
+
                     <div class="btn-group">
+                        {% if user == object.owner or user.is_superuser %}
                         <a href="{% url 'mailing:client_update' object.pk %}"
                            class="btn btn-sm btn-outline-secondary">Изменить</a>
                         <a href="{% url 'mailing:client_delete' object.pk %}"
-                           class="btn btn-sm btn-outline-danger">Удалить</a>
-                        <a class="btn btn-primary" href="{% url 'mailing:client_list' %}" role="button">Назад</a>
+                           class="btn btn-sm btn-outline-secondary">Удалить</a>
+                        {% endif %}
+                        <a class="btn btn-outline-secondary" href="{% url 'mailing:client_list' %}" role="button">Назад</a>
                     </div>
-                    {% if object.is_active %}
-                    <a href="{% url 'mailing:toggle_activity' object.pk %}"
-                       class="btn btn-warning">Деактивировать</a>
-                    {% else %}
-                    <a href="{% url 'mailing:toggle_activity' object.pk %}"
-                       class="btn btn-success">Активировать</a>
-                    {% endif %}
+
                 </div>
             </div>
         </div>

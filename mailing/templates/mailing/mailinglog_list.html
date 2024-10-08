@@ -21,7 +21,13 @@
                     <tr>
                         <td>{{ object.mailing.subject }}</td>
                         <td>{{ object.time }}</td>
-                        <td>{{ object.status }}</td>
+                        <td>
+                            {% if object.status %}
+                            Успешно отправлена
+                            {% else %}
+                            Ошибка отправки
+                            {% endif %}
+                        </td>
                         <td>{{ object.server_response|truncatechars:50 }}</td>
                     </tr>
                     {% endfor %}

@@ -7,7 +7,6 @@
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         <div class="col">
             <div class="card shadow-sm">
-                <img src="{{ client.image | media_filter }}">
                 <div class="card-body">
                     <p class="card-text">Тема рассылки: {{ object.subject }}</p>
                     <p class="card-text">Текст рассылки: {{ object.body }}</p>
@@ -23,8 +22,8 @@
                         <div class="btn-group">
                             <a class="btn btn-primary" href="{% url 'mailing:emailsetting_list' %}"
                                role="button">Вернуться</a>
-                            {% if perms.mailings.deactivate_mailing or user == object.owner or user.is_superuser %}
-                            <a class="btn btn-success" href="{% url 'mailings:emailsetting_update' object.pk %}"
+                            {% if user == object.owner or user.is_superuser %}
+                            <a class="btn btn-success" href="{% url 'mailing:emailsetting_update' object.pk %}"
                                role="button">Изменить</a>
                             {% endif %}
                         </div>

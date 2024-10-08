@@ -16,9 +16,10 @@
                 <table class="table">
                     <tr>
                         <th><h4>Тема рассылки</h4></th>
-                        <th><h4>Дата рассылки</h4></th>
+                        <th><h4>Дата начала рассылки</h4></th>
                         <th><h4>Периодичность рассылки</h4></th>
                         <th><h4>Статус рассылки</h4></th>
+                        <th><h4>Активность рассылки</h4></th>
 
                         <th><h4>Посмотреть рассылку</h4></th>
                         <th><h4>Редактировать рассылку</h4></th>
@@ -27,21 +28,37 @@
                     {% for object in object_list %}
                     <tr>
                         <td><h6>{{ object.subject }}</h6></td>
-                        <td><h6>{{ object.start_from }}</h6></td>
+                        <td><h6>{{ object.start_from|date:"d.m.Y H:i" }}</h6></td>
                         <td><h6>{{ object.periodicity }}</h6></td>
                         <td><h6>{{ object.status }}</h6></td>
-
+                        {% if object.is_active %}
+                        <td><h6>Активная</h6></td>
+                        {% else %}
+                        <td><h6>Неактивная</h6></td>
+                        {% endif %}
                         <td><h6>
+                            {% if user.is_superuser or user == object.owner %}
                             <a class="btn btn-lg btn-primary"
                                href="{% url 'mailing:emailsetting_detail' object.pk %}">Подробнее</a>
+                            {% else %}
+                            <p>Нет доступа</p>
+                            {% endif %}
                         </h6></td>
                         <td><h6>
+                            {% if user.is_superuser or user == object.owner %}
                             <a class="btn btn-lg btn-warning"
-                               href="{% url 'mailings:emailsetting_update' object.pk %}">Изменить</a>
+                               href="{% url 'mailing:emailsetting_update' object.pk %}">Изменить</a>
+                            {% else %}
+                            <p>Нет доступа</p>
+                            {% endif %}
                         </h6></td>
                         <td><h6>
+                            {% if user.is_superuser or user == object.owner %}
                             <a class="btn btn-lg btn-danger"
-                               href="{% url 'mailings:emailsetting_delete' object.pk %}">Удалить</a>
+                               href="{% url 'mailing:emailsetting_delete' object.pk %}">Удалить</a>
+                            {% else %}
+                            <p>Нет доступа</p>
+                            {% endif %}
                         </h6></td>
                         {% endfor %}
                     </tr>
@@ -51,7 +68,9 @@
     </div>
     <div class="row text-right mt-4">
         <div class="col-12">
+            {% if user.is_authenticated %}
             <a class="btn btn-secondary my-2" href="{% url 'mailing:emailsetting_create' %}">Создать новую рассылку</a>
+            {% endif %}
         </div>
     </div>
 </div>

@@ -11,11 +11,12 @@
                             {{ form.as_p }}
                             <button type="submit" class="btn btn-primary">
                                 {% if object %}
-                                    Сохранить
+                                Сохранить
                                 {% else %}
-                                    Создать
+                                Создать
                                 {% endif %}
                             </button>
+                            <a class="btn btn-lg" href="{% url 'mailing:emailsetting_list' %}" role="button">Отмена</a>
                          </form>
                     </div>
                 </div>

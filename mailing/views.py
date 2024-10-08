@@ -23,17 +23,14 @@ class IndexView(TemplateView):
 class ClientCreateView(CreateView):
     model = Client
     form_class = ClientForm
+    success_url = 'mailing:client_list'
 
-    def get_success_url(self):
-        return reverse_lazy('mailing:client_detail', args=[self.kwargs.get('pk')])
 
 
 class ClientUpdateView(UpdateView):
     model = Client
     form_class = ClientForm
-
-    def get_success_url(self):
-        return reverse_lazy('mailing:client_detail', args=[self.kwargs.get('pk')])
+    success_url = 'mailing:client_list'
 
 
 class ClientListView(ListView):
@@ -88,3 +85,4 @@ class EmailSettingDeleteView(DeleteView):
 
 class MailingLogView(ListView):
     model = MailingLog
+
