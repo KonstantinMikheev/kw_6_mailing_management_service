@@ -1,5 +1,5 @@
 APScheduler
-Django
+Django==4.2.2
 django-apscheduler
 django-stubs
 ipython
