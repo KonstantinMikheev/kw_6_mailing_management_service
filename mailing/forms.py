@@ -18,19 +18,41 @@ class StyleFormMixin:
 class ClientForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Client
-        fields = '__all__'
+        exclude = ('owner',)
 
 
 class EmailSettingForm(StyleFormMixin, forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        """
+        Предоставляет доступ к объекту запроса,
+        так что в качестве параметров указаны только клиенты текущего пользователя
+        """
+        self.request = kwargs.pop('request')
+        super(EmailSettingForm, self).__init__(*args, **kwargs)
+        self.fields['client'].queryset = Client.objects.filter(owner=self.request.user)
+
+
     class Meta:
         model = EmailSetting
-        fields = '__all__'
+        fields = ('subject', 'body', 'description', 'periodicity', 'start_from', 'stop_at', 'is_active', 'client',)
         widgets = {
             'start_from': DateTimeInput(format='%Y-%m-%dT%H:%M',
                                         attrs={'type': 'datetime-local', 'class': 'form-control'}),
             'stop_at': DateTimeInput(format='%Y-%m-%dT%H:%M',
                                      attrs={'type': 'datetime-local', 'class': 'form-control'})
         }
+
+        def clean_clients(self):
+            cleaned_data = self.cleaned_data['client']
+            if cleaned_data.is_staff:
+                raise forms.ValidationError('Автором не может быть сотрудник сайта.')
+
+
+class EmailSettingManagerForm(StyleFormMixin, forms.ModelForm):
+    class Meta:
+        model = EmailSetting
+        fields = ('is_active',)
 
 
 class MailingLogForm(StyleFormMixin, forms.ModelForm):

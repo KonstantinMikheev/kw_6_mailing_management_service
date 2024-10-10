@@ -37,7 +37,7 @@
                         <td><h6>Неактивная</h6></td>
                         {% endif %}
                         <td><h6>
-                            {% if user.is_superuser or user == object.owner %}
+                            {% if user.is_superuser or user == object.owner or perms.mailing.view_emailsetting %}
                             <a class="btn btn-lg btn-primary"
                                href="{% url 'mailing:emailsetting_detail' object.pk %}">Подробнее</a>
                             {% else %}

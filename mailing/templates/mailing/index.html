@@ -28,5 +28,25 @@
         </ul>
     </div>
 </div>
-
+<div class="row text-center">
+        {% for blog in random_blog_posts %}
+            <div class="col-4">
+                <div class="card mb-4 box-shadow">
+                    <div class="card-body">
+                        <h3 class="card-title pricing-card-title">{{ blog }}</h3>
+                        <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                            <p>{{ blog.body|truncatechars:100 }}</p>
+                        </ul>
+                        <a href="{% url 'blog:view' blog.pk %}" type="button"
+                           class="btn btn-block btn-outline-dark mt-auto">Подробнее</a>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small>Создано: <strong>{{ blog.created_at }}</strong></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

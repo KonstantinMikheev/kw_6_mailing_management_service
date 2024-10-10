@@ -14,12 +14,16 @@
                         {% if user.is_authenticated %}
                         <li><a href="{% url 'users:logout' %}" class="text-white">Выход</a></li>
                         <li><a href="{% url 'users:profile' %}" class="text-white">Профиль</a></li>
+                            {% if user.is_superuser or perms.deactivate_user %}
+                            <li><a href="{% url 'users:user_list' %}" class="text-white">Пользователи</a></li>
+                            {% endif %}
                         {% else %}
                         <li><a href="{% url 'users:login' %}" class="text-white">Вход</a></li>
                         <li><a href="{% url 'users:register' %}" class="text-white">Регистрация</a></li>
                         {% endif %}
                         <p> </p>
                         <li><a href="{% url 'mailing:home' %}" class="text-white">Главная страница</a></li>
+                        <li><a href="{% url 'blog:list' %}" class="text-white">Блог</a></li>
                          {% if user.is_authenticated %}
                         <li><a href="{% url 'mailing:client_list' %}" class="text-white">Клиенты рассылок</a></li>
                         {% endif %}

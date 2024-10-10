@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     'mailing',
     'users',
+    'blog',
 
 ]
 
@@ -156,3 +157,14 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 LOGIN_URL = '/users/'
+
+CACHE_ENABLED = os.getenv('CACHE_ENABLED', False) == 'True'
+
+if CACHE_ENABLED:
+    CASHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+            'LOCATION': os.getenv('CACHE_LOCATION'),
+            'TIMEOUT': 300
+        }
+    }

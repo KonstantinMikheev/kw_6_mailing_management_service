@@ -63,6 +63,10 @@ class EmailSetting(models.Model):
         verbose_name = 'настройка рассылки'
         verbose_name_plural = 'настройки рассылок'
 
+        permissions = [
+            ('deactivate_mailing', 'Can deactivate mailing'),
+        ]
+
 
 class MailingLog(models.Model):
     time = models.DateTimeField(verbose_name='дата и время последней попытки', auto_now_add=True)
