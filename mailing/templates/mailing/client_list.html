@@ -3,25 +3,39 @@
 
 {% block content %}
 <div class="col-12 mb-5">
-    <a class="btn btn-outline-primary" href="{% url 'mailing:create' %}">Добавить клиента</a>
+    {% if user.is_authenticated %}
+    <a class="btn btn-outline-primary" href="{% url 'mailing:client_create' %}">Добавить клиента</a>
+    {% endif %}
 </div>
 <div class="card-body">
     <table class="table table-stripped">
         <tr>
             <th>Имя</th>
+            <th>Отчество</th>
             <th>Фамилия</th>
             <th>Email</th>
             <th>Состояние</th>
             <th>Информация о клиенте</th>
         </tr>
         {% for object in object_list %}
+        {% if user.is_superuser or user == object.owner %}
         <tr>
             <td>{{ object.first_name }}</td>
-            <td>{{ object.second_name }}</td>
+            {% if object.patronymic %}
+            <td>{{ object.patronymic }}</td>
+            {% else %}
+            <td></td>
+            {% endif %}
+            <td>{{ object.last_name }}</td>
             <td>{{ object.email }}</td>
-            <td>{{ object.is_active }}</td>
+            {% if object.is_active %}
+            <td>Активный</td>
+            {% else %}
+            <td>Не активный</td>
+            {% endif %}
             <td><a href="{% url 'mailing:client_detail' object.pk %}">Подробнее</a></td>
         </tr>
+        {% endif %}
         {% endfor %}
     </table>
 </div>

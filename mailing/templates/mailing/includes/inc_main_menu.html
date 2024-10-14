@@ -1,22 +1,48 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Carousel</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                </li>
-            </ul>
+<header data-bs-theme="dark">
+    <div class="collapse text-bg-dark" id="navbarHeader">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-md-7 py-4">
+                    <h4>Сервис</h4>
+                    <p class="text-body-secondary">
+                        создания автоматических рассылок на электронную почту ваших клиентов
+                    </p>
+                </div>
+                <div class="col-sm-4 offset-md-1 py-4">
+                    <h4>Навигация</h4>
+                    <ul class="list-unstyled">
+                        {% if user.is_authenticated %}
+                        <li><a href="{% url 'users:logout' %}" class="text-white">Выход</a></li>
+                        <li><a href="{% url 'users:profile' %}" class="text-white">Профиль</a></li>
+                            {% if user.is_superuser or perms.deactivate_user %}
+                            <li><a href="{% url 'users:user_list' %}" class="text-white">Пользователи</a></li>
+                            {% endif %}
+                        {% else %}
+                        <li><a href="{% url 'users:login' %}" class="text-white">Вход</a></li>
+                        <li><a href="{% url 'users:register' %}" class="text-white">Регистрация</a></li>
+                        {% endif %}
+                        <p> </p>
+                        <li><a href="{% url 'mailing:home' %}" class="text-white">Главная страница</a></li>
+                        <li><a href="{% url 'blog:list' %}" class="text-white">Блог</a></li>
+                         {% if user.is_authenticated %}
+                        <li><a href="{% url 'mailing:client_list' %}" class="text-white">Клиенты рассылок</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'mailing:emailsetting_list' %}" class="text-white">Список рассылок</a></li>
+                        <li><a href="{% url 'mailing:mailinglog_list' %}" class="text-white">Статусы рассылок</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
-</nav>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a href="{% url 'mailing:home' %}" class="navbar-brand d-flex align-items-center">
+                <strong>Your Mail Service</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
+                    aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </div>
+</header>
